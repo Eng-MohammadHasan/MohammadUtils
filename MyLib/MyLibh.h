@@ -9,6 +9,25 @@ namespace MyLib
 {
 	namespace Input
 	{
+		int ReadNumber()
+		{
+			int Number = 0;
+			cout << "Please enter a number ? \n";
+			cin >> Number;
+		
+			while (cin.fail())
+			{
+				//user didn't input a number 
+				cin.clear();
+				cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				cout << "Invalid Number, Enter a valid one : " << endl;
+		
+				cin >> Number;
+			}
+		
+			return Number;
+		}
+
 		int ReadPositiveNumber(string message)
 		{
 			int Number = 0;
