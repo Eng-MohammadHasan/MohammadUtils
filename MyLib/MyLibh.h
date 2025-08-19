@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
+#include <limits> // for numeric_limits
 
 using namespace std;
 
@@ -717,27 +718,44 @@ namespace MyLib
 
 	namespace Vector
 	{
-		void ReadVectorElements(vector<int>& vNumbers)
+		int ReadNumber()
 		{
-			char AddMore = 'Y';
 			int Number = 0;
-		
-			do
+			cout << "Please enter a number ? \n";
+			cin >> Number;
+				
+			while (cin.fail())
 			{
-				cout << "Please enter a number : \n";
+				//user didn't input a number 
+				cin.clear();
+				cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				cout << "Invalid Number, Enter a valid one : " << endl;
+				
 				cin >> Number;
-		
-				vNumbers.push_back(Number);
-		
-				cout << "Do you want to add more numbers (Y) or (N) : \n";
-				cin >> AddMore;
-		
-			} while (AddMore != 'N' && AddMore != 'n');
+			}
+				
+			return Number;
 		}
 		
-		void PrintVectorElements(vector<int>& vNumbers)
+		void ReadNumbers(vector<int>& vNumbers)
+		{
+			char ReadMore = 'Y';
+			int Number;
+		
+			while (ReadMore == 'Y' || ReadMore == 'y')
+			{
+				Number = ReadNumber();
+				vNumbers.push_back(Number);
+		
+				cout << "\nDo you want to add more numbers ? Y/N: \n";
+				cin >> ReadMore;
+			}
+		}
+		
+		void PrintVectorNumbers(const vector<int>& vNumbers)
 		{
 			cout << "\n";
+			cout << "Numbers vector : \n";
 		
 			for (int& Number : vNumbers)
 			{
@@ -745,4 +763,5 @@ namespace MyLib
 			}
 			cout << endl;
 		}
+
 	}
