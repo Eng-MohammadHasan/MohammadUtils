@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -713,4 +714,35 @@ namespace MyLib
 			system("color 0F");
 		}
 	}
-}
+
+	namespace Vector
+	{
+		void ReadVectorElements(vector<int>& vNumbers)
+		{
+			char AddMore = 'Y';
+			int Number = 0;
+		
+			do
+			{
+				cout << "Please enter a number : \n";
+				cin >> Number;
+		
+				vNumbers.push_back(Number);
+		
+				cout << "Do you want to add more numbers (Y) or (N) : \n";
+				cin >> AddMore;
+		
+			} while (AddMore != 'N' && AddMore != 'n');
+		}
+		
+		void PrintVectorElements(vector<int>& vNumbers)
+		{
+			cout << "\n";
+		
+			for (int& Number : vNumbers)
+			{
+				cout << Number << endl;
+			}
+			cout << endl;
+		}
+	}
