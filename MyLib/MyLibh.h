@@ -769,22 +769,26 @@ namespace MyLib
 
 	namespace Files
 	{
-		void PrintFileContent(const string FilePath)
+		void PrintFileContent(const string& FileName)
 			{
-				fstream MyFile(FilePath, ios::in);
+				fstream MyFile;
+				MyFile.open(FileName, ios::in);// read Mode 
 			
-				if (MyFile.is_open())
+				if (!MyFile.is_open())
 				{
-					string currentLine = "";
-			
-					while (getline(MyFile, currentLine))
-					{
-						cout << currentLine << '\n';
-					}
-			
-					MyFile.close();
+					cout << "Error : Could not open the file\n";
+					return;
 				}
-		}
+			
+				string Line;
+			
+				while (getline(MyFile, Line))
+				{
+					cout << Line << endl;
+				}
+			
+				MyFile.close();
+			}
 		
 		void CopyFile(const string sourcePath, const string destinationPath, const bool override)
 			{
@@ -822,61 +826,67 @@ namespace MyLib
 			CopyFile(sourcePath, destinationPath, override);
 			ClearFile(sourcePath);
 		}
-
-	void LoadDataFromFileToVector(string FileName, vector <string>& vFileContent)
-	{
-		fstream MyFile;
-		MyFile.open(FileName, ios::in);// read Mode
-	
-		if (MyFile.is_open())
+		
+		void LoadDataFromFileToVector(const string& FileName, vector <string>& vFileContent)
 		{
+			fstream MyFile;
+			MyFile.open(FileName, ios::in);// read Mode
+		
+			if (!MyFile.is_open())
+			{
+				cout << "Error : Could not open the file\n";
+				return;
+			}
+		
 			string Line;
-	
+		
 			while (getline(MyFile, Line))
 			{
 				vFileContent.push_back(Line);
 			}
-	
-			MyFile.close();
-		}
-}
 		
-		//void SaveVectorToFile(string FileName, const vector <string> & vFileContent)
-		void SaveVectorToFile(string FileName, vector <string> vFileContent)
+			MyFile.close();
+		
+		}
+		
+		void SaveVectorToFile(const string& FileName, const vector <string>& vFileContent)
 		{
 			fstream MyFile;
 			MyFile.open(FileName, ios::out);// Write Mode
 		
-			if (MyFile.is_open())
+			if (!MyFile.is_open())
 			{
-				for (string& Line : vFileContent)
-				{
-					if (Line != "")
-					{
-						MyFile << Line << endl;
-					}
-				}
-		
-				MyFile.close();
+				cout << "Error : Could not open the file\n";
+				return;
 			}
+		
+			for (const string& Line : vFileContent)
+			{
+				MyFile << Line << endl;
+			}
+		
+			MyFile.close();
+		
 		}
 		
-		void DeleteRecordFromFile(string FileName, string Record)
+		void DeleteRecordFromFile(const string& FileName, const string& Record)
 		{
 			vector <string> vFileContent;
 			LoadDataFromFileToVector(FileName, vFileContent);
 		
-			// don't forget the & (by ref), cuase we will edit on the vector's items
-			for (string& Line : vFileContent)
+			vector <string> vUpdatedFile;
+		
+			for (const string& Line : vFileContent)
 			{
-				if (Line == Record)
+				if (Line != Record)
 				{
-					Line = "";
+					vUpdatedFile.push_back(Line);
 				}
 			}
 		
-			SaveVectorToFile(FileName, vFileContent);
+			SaveVectorToFile(FileName, vUpdatedFile);
 		}
+
 	}
 
 
