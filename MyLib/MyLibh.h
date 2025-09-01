@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <vector>
 #include <limits> // for numeric_limits
+#include <fstream> 
 
 using namespace std;
 
@@ -765,3 +766,65 @@ namespace MyLib
 		}
 
 	}
+
+	namespace Files
+	{
+		void PrintFileContent(const string FilePath)
+			{
+				fstream MyFile(FilePath, ios::in);
+			
+				if (MyFile.is_open())
+				{
+					string currentLine = "";
+			
+					while (getline(MyFile, currentLine))
+					{
+						cout << currentLine << '\n';
+					}
+			
+					MyFile.close();
+				}
+		}
+		
+		void CopyFile(const string sourcePath, const string destinationPath, const bool override)
+			{
+				fstream srcFile;
+				srcFile.open(sourcePath, ios::in);
+			
+				fstream destinationFile;
+				destinationFile.open(destinationPath, override ? ios::out : ios::app);
+			
+				if (srcFile.is_open() && destinationFile.is_open())
+				{
+					string currentLine = "";
+					while (getline(srcFile, currentLine))
+					{
+						destinationFile << currentLine << '\n';
+					}
+			
+					srcFile.close();
+					destinationFile.close();
+				}
+		}
+		
+		void ClearFile(const string FilePath)
+			{
+				fstream MyFile(FilePath, ios::out);
+			
+				if (MyFile.is_open())
+				{
+					MyFile.close();
+				}
+		}
+		
+		void CutFile(const string sourcePath, const string destinationPath, const bool override)
+		{
+			CopyFile(sourcePath, destinationPath, override);
+			ClearFile(sourcePath);
+		}
+
+	}
+
+
+
+}
