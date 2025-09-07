@@ -755,10 +755,10 @@ namespace MyLib
 		
 		void PrintVectorNumbers(const vector<int>& vNumbers)
 		{
-			cout << "\n";
+			cout << '\n';
 			cout << "Numbers vector : \n";
 		
-			for (int& Number : vNumbers)
+			for (const int& Number : vNumbers)
 			{
 				cout << Number << endl;
 			}
